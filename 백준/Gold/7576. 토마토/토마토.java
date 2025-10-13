@@ -5,7 +5,6 @@ public class Main {
 
     static int N, M;
     static int[][] box;
-    static boolean[][] visited;
     static int tomatoes;
     static int[] dy = {1, -1, 0, 0};
     static int[] dx = {0, 0, 1, -1};
@@ -17,7 +16,6 @@ public class Main {
         M = Integer.parseInt(st.nextToken());   //x
         N = Integer.parseInt(st.nextToken());   //y
         box = new int[N][M];
-        visited = new boolean[N][M];
 
         int ctn = 0;
         List<int[]> start = new ArrayList<>();
@@ -47,7 +45,6 @@ public class Main {
             int startY = n[0], startX = n[1];
 
             q.add(new int[]{startY, startX, 0});
-            visited[startY][startX] = true;
         }
 
         int ctn = start.size();
@@ -64,12 +61,11 @@ public class Main {
                 int nx = x + dx[i];
 
                 if(nx >= 0 && nx < M && ny >= 0 && ny < N){
-                    if(!visited[ny][nx] && box[ny][nx] == 0){
+                    if(box[ny][nx] == 0){
                         q.add(new int[]{ny, nx, day + 1});
                         ctn++;
                         if(ctn == tomatoes) return day + 1;
                         box[ny][nx] = 1;
-                        visited[ny][nx] = true;
                     }
                 }
             }
