@@ -20,10 +20,10 @@ public class Main {
         Arrays.sort(arr);
 
         int sum = 0;
+        int prev = 0;
         for(int i = 0; i < n; i++) {
-            for(int j = i; j >= 0; j--) {
-                sum += arr[j];
-            }
+            sum += prev + arr[i];
+            prev += arr[i];
         }
         System.out.println(sum);
     }
