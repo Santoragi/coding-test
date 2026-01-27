@@ -27,17 +27,11 @@ public class Main {
         }
 
         int min = Integer.MAX_VALUE;
-        int idx = 0;
+        int idx = -1;
         for(int i = 1; i <= N; i++) {
-            int sum = 0;
-            for(int j = 1; j <= N; j++) {
-                if(i == j) continue;
-                int result = bfs(i, j);
-                sum += result;
-            }
-
-            if(sum < min) {
-                min = sum;
+            int result = bfs(i);
+            if(result < min) {
+                min = result;
                 idx = i;
             }
         }
@@ -45,7 +39,7 @@ public class Main {
         System.out.println(idx);
     }
 
-    static int bfs(int start, int target) {
+    static int bfs(int start) {
         Queue<int[]> q = new LinkedList<>();
         visited = new boolean[N + 1];
 
@@ -58,14 +52,11 @@ public class Main {
             int idx = cur[0];
             int cnt = cur[1];
 
-            if(idx == target) {
-                result = cnt;
-            }
-
             for(int i = 1; i <= N; i++) {
                 if(i == idx) continue;
                 if(relation[idx][i] == 1 && !visited[i]) {
                     visited[i] = true;
+                    result += cnt + 1;
                     q.add(new int[]{i, cnt + 1});
                 }
             }
