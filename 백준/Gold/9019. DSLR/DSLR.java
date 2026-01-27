@@ -79,20 +79,10 @@ public class Main {
     }
 
     static int L(int n) {
-        int d1 = n / 1000;
-        int d2 = (n % 1000) / 100;
-        int d3 = ((n % 1000) % 100) / 10;
-        int d4 = ((n % 1000) % 100) % 10;
-
-        return ((d2 * 10 + d3) * 10 + d4) * 10 + d1;
+        return (n % 1000) * 10 + n / 1000;
     }
 
     static int R(int n) {
-        int d1 = n / 1000;
-        int d2 = (n % 1000) / 100;
-        int d3 = ((n % 1000) % 100) / 10;
-        int d4 = ((n % 1000) % 100) % 10;
-
-        return ((d4 * 10 + d1) * 10 + d2) * 10 + d3;
+        return (n % 10) * 1000 + n / 10;
     }
 }
