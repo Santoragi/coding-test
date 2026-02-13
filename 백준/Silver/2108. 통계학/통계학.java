@@ -12,7 +12,7 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         int[] arr = new int[8001];
 
-        double sum = 0;
+        int sum = 0;
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
 
@@ -70,7 +70,7 @@ public class Main {
             }
         }
 
-        sb.append(Math.round(sum / N)).append("\n"); //산술평균
+        sb.append((int)Math.round((double)sum / N)).append("\n"); //산술평균
         sb.append(mid).append("\n");                 //중앙값
         sb.append(second).append("\n");              //최빈값
         sb.append(max - min).append("\n");           //범위
