@@ -10,7 +10,7 @@ class Solution {
             arr[i] = s;
         }
         
-        Arrays.sort(arr, (o1, o2) -> (o2 + o1).compareTo(o1 + o2));
+        Arrays.sort(arr, (o1, o2) -> - (o1 + o2).compareTo(o2 + o1));
         
         if(arr[0].equals("0")) {
             return "0";
