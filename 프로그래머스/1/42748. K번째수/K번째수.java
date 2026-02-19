@@ -3,28 +3,20 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] array, int[][] commands) {
         
-        ArrayList<Integer> result = new ArrayList<>();
+        int[] result = new int[commands.length];
         
-        for(int i = 0; i < commands.length; i++) {
-            int start = commands[i][0] - 1;
-            int end = commands[i][1] - 1;
-            int k = commands[i][2] - 1;
+        int idx = 0;
+        for(int[] command : commands) {
+            int i = command[0];
+            int j = command[1];
+            int k = command[2];
             
-            int[] arr = new int[end - start + 1];
-            int idx = 0;
-            for(int j = start; j <= end; j++) {
-                arr[idx] = array[j];
-                idx++;
-            }
-            
+            int[] arr = Arrays.copyOfRange(array, i - 1, j);
             Arrays.sort(arr);
-            result.add(arr[k]);
+            result[idx] = arr[k - 1];
+            idx++;
         }
         
-        int[] answer = new int[result.size()];
-        for(int i = 0; i < result.size(); i++) {
-            answer[i] = result.get(i);
-        }
-        return answer;
+        return result;
     }
 }
