@@ -6,8 +6,6 @@ public class Main {
     static int N;
     static int[][] board;
     static boolean[] choice;
-    static int start = 0;
-    static int link = 0;
     static int min = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
@@ -31,24 +29,44 @@ public class Main {
 
     static void dfs(int cnt, int idx) {
         if(cnt == N/2) {
-            for(int i = 0; i < N; i++) {
-                for(int j = 0; j < N; j++) {
-                    if(i == j) continue;
-                    if(choice[i] && choice[j]) start += board[i][j];
-                    if(!choice[i] && !choice[j]) link += board[i][j];
-                }
+            int score = getScore();
+            if(score < min) {
+                min = score;
             }
-            min = Math.min(min, Math.abs(start - link));
-            start = 0;
-            link = 0;
+            if(score == 0) {
+                System.out.println(score);
+                System.exit(0);
+            }
+
             return;
         }
 
-        if(idx < N) {
-            choice[idx] = true;
-            dfs(cnt + 1, idx + 1); //선택한 경우
-            choice[idx] = false;
-            dfs(cnt, idx + 1); //선택하지 않은 경우
+        for(int i = idx; i < N; i++) {
+            if(!choice[i]) {
+                choice[i] = true;
+                dfs(cnt + 1, i + 1);
+                choice[i] = false;
+            }
         }
+    }
+
+    static int getScore() {
+        int start = 0;
+        int link = 0;
+
+        for(int i = 0; i < N - 1; i++) {
+            for(int j = i + 1; j < N; j++) {
+                if(choice[i] && choice[j]) {
+                    start += board[i][j];
+                    start += board[j][i];
+                }
+                else if(!choice[i] && !choice[j]) {
+                    link += board[i][j];
+                    link += board[j][i];
+                }
+            }
+        }
+
+        return Math.abs(start - link);
     }
 }
