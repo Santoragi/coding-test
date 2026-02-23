@@ -6,6 +6,7 @@ public class Main {
     static int L, C;
     static char[] arr = {'a', 'e', 'i', 'o', 'u'};
     static char[] input;
+    static char[] code;
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
@@ -15,7 +16,9 @@ public class Main {
         st = new StringTokenizer(br.readLine(), " ");
         L = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
+
         input = new char[C];
+        code = new char[L];
 
         st = new StringTokenizer(br.readLine(), " ");
         for(int i = 0; i < C; i++) {
@@ -23,37 +26,36 @@ public class Main {
         }
 
         Arrays.sort(input);
-        String code = "";
-        dfs(code, 0);
+        dfs(0, 0);
 
         System.out.println(sb.toString());
     }
 
-    static void dfs(String code, int idx) {
-        if(idx >= C) {
-            if(verify(code)){
+    //뽑는 개수가 정해져있으니 조합 생성 방식 사용
+    static void dfs(int cnt, int idx) {
+        if(cnt == L) {
+            if(verify()) {
                 sb.append(code).append("\n");
             }
-
             return;
         }
 
-        String newCode = code + input[idx];
-        dfs(newCode,idx + 1);
-        dfs(code, idx + 1); //선택하지 않은 경우
+        for(int i = idx; i < C; i++) {
+            code[cnt] = input[i];
+            dfs(cnt + 1, i + 1);
+        }
     }
 
-    static boolean verify(String code) {
-        if(code.length() != L) return false;
+    static boolean verify() {
+        int cnt1 = 0;
+        int cnt2 = 0;
 
-        int cnt = 0;
-        for(int i = 0; i < code.length(); i++) {
-            for(char c : arr) {
-                if(code.charAt(i) == c) cnt++;
-            }
+        for(char c : code) {
+            if(c == arr[0] || c == arr[1] || c == arr[2] || c == arr[3] || c == arr[4]) cnt1++;
+            else cnt2++;
         }
 
-        if(cnt >= 1 && code.length() - cnt >= 2) return true;
+        if(cnt1 >= 1 && cnt2 >= 2) return true;
         else return false;
     }
 }
