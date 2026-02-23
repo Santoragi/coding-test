@@ -4,9 +4,8 @@ import java.util.*;
 public class Main {
 
     static int N, M;
-    static int[][] map;
     static List<int[]> chicken = new ArrayList<>();
-    static List<int[]> selected = new ArrayList<>();
+    static boolean[] selected;
     static List<int[]> house = new ArrayList<>();
 
     static int min = Integer.MAX_VALUE;
@@ -19,7 +18,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        map = new int[N][N];
         for(int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             for(int j = 0; j < N; j++) {
@@ -30,10 +28,10 @@ public class Main {
                 else if(n == 1) {
                     house.add(new int[]{i, j});
                 }
-                map[i][j] = n;
             }
         }
 
+        selected = new boolean[chicken.size()];
         dfs(0,0);
         System.out.println(min);
     }
@@ -48,9 +46,9 @@ public class Main {
         }
 
         for(int i = idx; i < chicken.size(); i++) {
-            selected.add(chicken.get(i));
+            selected[i] = true;
             dfs(cnt + 1, i + 1);
-            selected.remove(selected.size() - 1);
+            selected[i] = false;
         }
     }
 
@@ -58,12 +56,15 @@ public class Main {
     static int getDistance() {
         int sum = 0;
 
-        for(int[] pos : house) {
+        for(int[] h : house) {
             int min_dist = Integer.MAX_VALUE;
-            for(int[] chicken_pos : selected) {
-                int dist = Math.abs(pos[0] - chicken_pos[0]) + Math.abs(pos[1] - chicken_pos[1]);
-                if(dist < min_dist) {
-                    min_dist = dist;
+            for(int i = 0; i < chicken.size(); i++) {
+                if(selected[i]) {
+                    int[] c = chicken.get(i);
+                    int dist = Math.abs(h[0] - c[0]) + Math.abs(h[1] - c[1]);
+                    if(dist < min_dist) {
+                        min_dist = dist;
+                    }
                 }
             }
 
