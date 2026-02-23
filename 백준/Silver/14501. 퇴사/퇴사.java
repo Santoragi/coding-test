@@ -12,33 +12,27 @@ public class Main {
         StringTokenizer st;
 
         N = Integer.parseInt(br.readLine());
-        schedule = new int[N + 1][2];
 
-        for(int i = 1; i <= N; i++) {
-            st = new StringTokenizer(br.readLine());
-            schedule[i][0] = Integer.parseInt(st.nextToken());
-            schedule[i][1] = Integer.parseInt(st.nextToken());
+        int[] t = new int[N];
+        int[] p = new int[N];
+
+        for(int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+
+            t[i] = Integer.parseInt(st.nextToken());
+            p[i] = Integer.parseInt(st.nextToken());
         }
 
-        for(int i = 1; i <= N; i++) {
-            calc(i, schedule[i][1]);
+        int[] dp = new int[N + 1];
+
+        for(int i = 0; i < N; i++) {
+            if(i + t[i] <= N) {
+                dp[i + t[i]] = Math.max(dp[i + t[i]], dp[i] + p[i]);
+            }
+
+            dp[i + 1] = Math.max(dp[i + 1], dp[i]);
         }
 
-        System.out.println(answer);
+        System.out.println(dp[N]);
     }
-
-    static void calc(int day, int pay) {
-        if(day > N) return;
-        int next = day + schedule[day][0];
-        if(next > N + 1) return;
-
-        if(pay > answer) {
-            answer = pay;
-        }
-
-        for(int i = next; i <= N; i++) {
-            calc(i, pay + schedule[i][1]);
-        }
-    }
-
 }
