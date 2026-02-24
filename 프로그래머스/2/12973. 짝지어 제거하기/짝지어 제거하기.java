@@ -7,7 +7,6 @@ class Solution
         char[] arr = s.toCharArray();
         
         Stack<Character> stack = new Stack<>();
-        Stack<Character> temp = new Stack<>();
         
         for(int i = 0; i < arr.length; i++) {
             if(stack.isEmpty()) {
