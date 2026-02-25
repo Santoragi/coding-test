@@ -1,51 +1,44 @@
-import java.io.*;
 import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] answer;
-        int[] days = new int[progresses.length];
+        int size = progresses.length;
         
-        for(int i = 0; i < progresses.length; i++) {
-            int day = (100 - progresses[i]) / speeds[i];
-            if((100 - progresses[i]) % speeds[i] > 0) {
-                day++;
+        Queue<Integer> q = new LinkedList<>();
+        
+        for(int i = 0; i < size; i++) {
+            int date = (100 - progresses[i]) / speeds[i];
+            if((100 - progresses[i]) % speeds[i] != 0) {
+                date++;
             }
-            days[i] = day;
+            q.offer(date);
         }
         
-        ArrayList<Integer> list = new ArrayList<>();
-        Deque<Integer> deq = new ArrayDeque<>();
-        for(int i = 0; i < days.length; i++) {
-            deq.addLast(days[i]);
-        }
+        Queue<Integer> result = new LinkedList<>();
         
-        
-        while(!deq.isEmpty()) {
-            int first = deq.pollFirst();
-            int cnt = 1;
+        int prev = q.poll();
+        int cnt = 1;
+        while(!q.isEmpty()) {
+            int cur = q.poll();
             
-            while(true) {
-                if(deq.isEmpty()) {
-                    list.add(cnt);
-                    break;
-                }
-                
-                int next = deq.peekFirst();
-                if(first < next) {
-                    list.add(cnt);
-                    break;
-                }
-                else {
-                    deq.pollFirst();
-                    cnt++;
-                }
+            if(cur <= prev) {
+                cnt++;
+            }
+            else {
+                result.offer(cnt);
+                cnt = 1;
+                prev = cur;
+            }
+            
+            if(q.isEmpty()) {
+                result.offer(cnt);
             }
         }
         
-        answer = new int[list.size()];
-        for(int i = 0; i < answer.length; i++) {
-            answer[i] = list.get(i);
+        int[] answer = new int[result.size()];
+        int idx = 0;
+        while(!result.isEmpty()) {
+            answer[idx++] = result.poll();
         }
         
         return answer;
