@@ -1,0 +1,19 @@
+# -- 코드를 입력하세요
+# SELECT total.FLAVOR
+# FROM (SELECT f.FLAVOR,RANK(f.TOTAL_ORDER + j.TOTAL_ORDER)
+# FROM FIRST_HALF as f
+# INNER JOIN JULY as j
+# ON f.FLAVOR = j.FLAVOR
+# GROUP BY f.FLAVOR
+# ORDER BY f.TOTAL_ORDER + j.TOTAL_ORDER desc) as total
+
+SELECT s.FLAVOR
+FROM(SELECT f.FLAVOR, RANK() OVER (ORDER BY fsum + jsum desc) as r
+    FROM (SELECT FLAVOR, SUM(TOTAL_ORDER) as fsum
+        FROM FIRST_HALF
+        GROUP BY FLAVOR) as f
+    INNER JOIN (SELECT FLAVOR, SUM(TOTAL_ORDER) as jsum
+        FROM JULY
+        GROUP BY FLAVOR) as j
+    ON f.FLAVOR = j.FLAVOR) as s
+WHERE s.r <= 3;
