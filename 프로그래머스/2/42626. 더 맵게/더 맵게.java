@@ -2,28 +2,32 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] scoville, int K) {
-        int cnt = 0;
+        int answer = 0;
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        
-        for(int i = 0; i < scoville.length; i++) {
-            pq.add(scoville[i]);
+        for(int s : scoville) {
+            pq.offer(s);
         }
         
         while(!pq.isEmpty()) {
             int first = pq.poll();
-            if(first >= K) break;
+            if(first >= K) {
+                //가장 맵지 않은 음식이 K이상이면
+                break;
+            }
             if(pq.isEmpty()) {
+                //마지막 음식이면
                 return -1;
             }
+            
             int second = pq.poll();
             
-            //mix
-            int mix = first + second * 2;
-            cnt++;
-            pq.add(mix);
+            int mixed = first + (second * 2);
+            pq.offer(mixed);
+            answer++;
         }
         
-        return cnt;
+        
+        return answer;
     }
 }
