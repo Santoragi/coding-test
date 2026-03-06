@@ -1,34 +1,51 @@
+import java.util.*;
+
 class Solution {
+    
+    static List<List<Integer>> graph = new ArrayList<>();
     static boolean[] visited;
-    static int N;
-    static int[][] graph;
+    
     public int solution(int n, int[][] computers) {
-        int cnt = 0;
-        visited = new boolean[n];
-        graph = computers;
-        N = n;
         
         for(int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        visited = new boolean[n];
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(computers[i][j] == 1) {
+                    graph.get(i).add(j);
+                }
+            }
+        }
+        
+        int cnt = 0;
+        for(int i = 0; i < n; i++) {
             if(visited[i]) continue;
-            dfs(i, 1);
+            
+            bfs(i);
             cnt++;
         }
         
         return cnt;
     }
     
-    static void dfs(int node, int depth) {
-        if(depth >= N) {
-            return;
-        }
+    static void bfs(int node) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(node);
         
-        for(int i = 0; i < N; i++) {
-            if(node == i) continue;
-            if(visited[i]) continue;
-            if(graph[node][i] != 1) continue;
+        visited[node] = true;
+        
+        while(!q.isEmpty()) {
+            int cur = q.poll();
             
-            visited[i] = true;
-            dfs(i, depth + 1);
+            for(int next : graph.get(cur)) {
+                if(visited[next]) continue;
+                
+                visited[next] = true;
+                q.add(next);
+            }
         }
     }
 }
