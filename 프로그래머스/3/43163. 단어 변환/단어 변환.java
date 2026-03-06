@@ -2,32 +2,17 @@ import java.util.*;
 
 class Solution {
     
-    static int min = Integer.MAX_VALUE;
     static boolean[] visited;
-    static int N;
     
     public int solution(String begin, String target, String[] words) {
-        N = words.length;
-        visited = new boolean[N];
         
-        boolean possible = false;
-        for(String w : words) {
-            if(w.equals(target)) {
-                possible = true;
-                break;
-            }
-        }
+        int n = words.length;
+        visited = new boolean[n];
         
-        if(possible) {
-            bfs(begin, target, words);
-        }
-        else {
-            return 0;
-        }
-        return min;
+        return bfs(begin, target, words, visited);
     }
     
-    static void bfs(String begin, String target, String[] words) {
+    public int bfs(String begin, String target, String[] words, boolean[] visited) {
         Queue<Info> q = new LinkedList<>();
         q.add(new Info(begin, 0));
         
@@ -35,38 +20,37 @@ class Solution {
             Info cur = q.poll();
             
             if(cur.word.equals(target)) {
-                min = cur.depth;
-                break;
+                return cur.dist;
             }
             
-            for(int i = 0; i < N; i++) {
-                String word = words[i];
-                
+            for(int i = 0; i < words.length; i++) {
                 if(visited[i]) continue;
-                
-                int cnt = 0;
+                String word = words[i];
+                int diff = 0;
                 for(int j = 0; j < word.length(); j++) {
-                    char c1 = cur.word.charAt(j);
-                    char c2 = word.charAt(j);
+                    int c1 = cur.word.charAt(j);
+                    int c2 = word.charAt(j);
                     
-                    if(c1 != c2) cnt++;
+                    if(c1 != c2) diff++;
                 }
                 
-                if(cnt == 1) {
+                if(diff == 1) {
                     visited[i] = true;
-                    q.add(new Info(word, cur.depth + 1));
+                    q.add(new Info(word, cur.dist + 1));
                 }
             }
-        }     
+        }
+        
+        return 0;
     }
     
-    static class Info {
+    static class Info{
         String word;
-        int depth;
+        int dist;
         
-        public Info(String word, int depth) {
+        public Info(String word, int dist) {
             this.word = word;
-            this.depth = depth;
+            this.dist = dist;
         }
     }
 }
