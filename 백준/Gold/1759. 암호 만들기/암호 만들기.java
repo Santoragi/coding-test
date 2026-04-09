@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Main {
 
+    static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     static int L, C;
-    static char[] arr = {'a', 'e', 'i', 'o', 'u'};
-    static char[] input;
+    static char[] arr;
     static char[] code;
     static StringBuilder sb = new StringBuilder();
 
@@ -17,45 +17,53 @@ public class Main {
         L = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
 
-        input = new char[C];
+        arr = new char[C];
         code = new char[L];
 
         st = new StringTokenizer(br.readLine(), " ");
         for(int i = 0; i < C; i++) {
-            input[i] = st.nextToken().charAt(0);
+            arr[i] = st.nextToken().charAt(0);
         }
+        Arrays.sort(arr);
 
-        Arrays.sort(input);
         dfs(0, 0);
 
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
-    //뽑는 개수가 정해져있으니 조합 생성 방식 사용
-    static void dfs(int cnt, int idx) {
-        if(cnt == L) {
+    public static void dfs(int depth, int index) {
+        if(depth == L) {
             if(verify()) {
-                sb.append(code).append("\n");
+                printCode();
             }
+
             return;
         }
 
-        for(int i = idx; i < C; i++) {
-            code[cnt] = input[i];
-            dfs(cnt + 1, i + 1);
+        for(int i = index ; i < C; i++) {
+            code[depth] = arr[i];
+            dfs(depth + 1, i + 1);
         }
     }
 
-    static boolean verify() {
-        int cnt1 = 0;
-        int cnt2 = 0;
+    public static void printCode() {
+        sb.append(code).append("\n");
+    }
+
+    public static boolean verify() {
+        int cnt_vowels = 0;  //모음 개수
+        int cnt_cons = 0;  //자음 개수
 
         for(char c : code) {
-            if(c == arr[0] || c == arr[1] || c == arr[2] || c == arr[3] || c == arr[4]) cnt1++;
-            else cnt2++;
+            if(c == vowels[0] ||
+                    c == vowels[1] ||
+                    c == vowels[2] ||
+                    c == vowels[3] ||
+                    c == vowels[4])
+                cnt_vowels++;
+            else cnt_cons++;
         }
 
-        if(cnt1 >= 1 && cnt2 >= 2) return true;
-        else return false;
+        return cnt_vowels >= 1 && cnt_cons >= 2;
     }
 }
