@@ -3,38 +3,37 @@ import java.util.*;
 
 public class Main {
 
+    static int N, r, c;
     static int cnt = 0;
-    static int[] dx = {0, 1, 0, 1};
-    static int[] dy = {0, 0, 1, 1};
-    public static void main(String[] args) throws IOException {
 
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
-        st = new StringTokenizer(br.readLine(), " ");
-        int N = Integer.parseInt(st.nextToken());
-        int r = Integer.parseInt(st.nextToken()); //y
-        int c = Integer.parseInt(st.nextToken()); //x
-        int size = (int) Math.pow(2, N);
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        r = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
 
-        visit(size, r, c);
+        z(N, r, c);
         System.out.println(cnt);
     }
 
-    static void visit(int size, int r, int c) {
-        if(size == 1) return;
+    public static void z(int n, int r, int c) {
+        if(n == 0) return;
 
-        if(r < size/2 && c < size/2) {         //1
-            visit(size/2, r, c);
-        }else if(r < size/2 && c >= size/2) {    //2
-            cnt += (size * size / 4);
-            visit(size/2, r, c - size/2);
-        }else if(r >= size/2 && c < size/2) {   //3
-            cnt += (size * size / 4) * 2;
-            visit(size/2, r - size/2, c);
-        }else if(r >= size/2 && c >= size/2) {   //4
-            cnt += (size * size / 4) * 3;
-            visit(size/2, r - size/2, c - size/2);
+        int size = (int) (Math.pow(2, n - 1));
+        if(r < size && c < size) {         //1
+            z(n - 1, r, c);
+        }else if(r < size && c >= size) {    //2
+            cnt += size * size;
+            z(n - 1, r, c - size);
+        }else if(r >= size && c < size) {   //3
+            cnt += size * size * 2;
+            z(n - 1, r - size, c);
+        }else if(r >= size && c >= size) {   //4
+            cnt += size * size * 3;
+            z(n - 1, r - size, c - size);
         }
     }
 }
